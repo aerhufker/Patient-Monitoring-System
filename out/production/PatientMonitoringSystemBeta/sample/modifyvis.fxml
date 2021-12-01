@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox prefHeight="936.0" prefWidth="1182.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.ModifyVisController">
+    <children>
+        <MenuBar>
+            <menus>
+                <Menu mnemonicParsing="false" text="File">
+                    <items>
+                        <MenuItem mnemonicParsing="false" text="Close" />
+                    </items>
+                </Menu>
+                <Menu mnemonicParsing="false" text="Edit">
+                    <items>
+                        <MenuItem mnemonicParsing="false" text="Delete" />
+                    </items>
+                </Menu>
+                <Menu mnemonicParsing="false" text="Help">
+                    <items>
+                        <MenuItem mnemonicParsing="false" text="About" />
+                    </items>
+                </Menu>
+            </menus>
+        </MenuBar>
+        <SplitPane dividerPositions="0.49426229508196723, 0.5008196721311475" prefHeight="750.0">
+            <items>
+                <AnchorPane maxWidth="300.0" minHeight="900.0" minWidth="297.0" prefHeight="900.0" prefWidth="297.0">
+                    <children>
+                        <ImageView fx:id="iv3" fitHeight="155.0" fitWidth="146.0" layoutX="69.0" layoutY="93.0" pickOnBounds="true" preserveRatio="true" />
+                        <Label layoutX="20.0" layoutY="352.0" text="NAME:" />
+                        <Label layoutX="12.0" layoutY="416.0" text="BLD GRP:" />
+                        <Label layoutX="11.0" layoutY="479.0" prefHeight="17.0" prefWidth="62.0" text="GENDER:" />
+                        <Label layoutX="16.0" layoutY="540.0" text="PHONE:" />
+                        <Label layoutX="23.0" layoutY="602.0" prefHeight="17.0" prefWidth="50.0" text="D.O.B :" />
+                        <Label layoutX="22.0" layoutY="659.0" text="AGE:" />
+                        <Label layoutX="20.0" layoutY="724.0" text="ADDRESS:" />
+                        <Label layoutX="20.0" layoutY="20.0" prefHeight="45.0" prefWidth="172.0" text="DETAILS:">
+                            <font>
+                                <Font name="System Bold Italic" size="30.0" />
+                            </font>
+                        </Label>
+                        <Button fx:id="uploadImage" layoutX="187.0" layoutY="272.0" mnemonicParsing="false" onAction="#upImage" text="Upload" />
+                        <Label fx:id="name" layoutX="119.0" layoutY="352.0" prefHeight="31.0" prefWidth="126.0" text="N/A" />
+                        <Label fx:id="Bgrp" layoutX="117.0" layoutY="416.0" prefHeight="31.0" prefWidth="116.0" text="N/A" />
+                        <Label fx:id="sex" layoutX="119.0" layoutY="479.0" prefHeight="32.0" prefWidth="74.0" text="N/A" />
+                        <Label fx:id="phone" layoutX="119.0" layoutY="540.0" prefHeight="31.0" prefWidth="74.0" text="N/A" />
+                        <Label fx:id="DOB" layoutX="114.0" layoutY="602.0" prefHeight="31.0" prefWidth="72.0" text="N/A" />
+                        <Label fx:id="age" layoutX="112.0" layoutY="659.0" prefHeight="31.0" prefWidth="60.0" text="N/A" />
+                        <Label fx:id="addr" layoutX="41.0" layoutY="724.0" prefHeight="100.0" prefWidth="172.0" text="N/A" />
+                        <Label layoutX="34.0" layoutY="76.0" text="PatientID:" />
+                        <Label fx:id="PIDLabel" layoutX="98.0" layoutY="76.0" />
+                    </children>
+                </AnchorPane>
+                <AnchorPane maxWidth="437.0" minWidth="200.0" prefHeight="900.0" prefWidth="437.0">
+                    <children>
+                        <TextArea fx:id="Diag" layoutX="16.0" layoutY="147.0" prefHeight="91.0" prefWidth="397.0" />
+                        <DatePicker fx:id="Date" layoutX="117.0" layoutY="61.0" />
+                        <Label layoutX="64.0" layoutY="59.0" prefHeight="31.0" prefWidth="95.0" text="Date:" />
+                        <Label layoutX="6.0" layoutY="6.0" prefHeight="44.0" prefWidth="116.0" text="VISIT:">
+                            <font>
+                                <Font name="System Bold Italic" size="30.0" />
+                            </font>
+                        </Label>
+                        <Label layoutX="14.0" layoutY="124.0" text="Diagnosis:" />
+                        <Label layoutX="21.0" layoutY="261.0" text="Prognosis:" />
+                        <TextArea fx:id="Prog" layoutX="15.0" layoutY="287.0" prefHeight="91.0" prefWidth="397.0" />
+                        <TextArea fx:id="Rem" layoutX="25.0" layoutY="642.0" prefHeight="91.0" prefWidth="397.0" />
+                        <Label layoutX="25.0" layoutY="606.0" text="Remarks:" />
+                        <Label layoutX="21.0" layoutY="392.0" text="Prescription:" />
+                        <TableView fx:id="tableMeds" layoutX="18.0" layoutY="428.0" prefHeight="155.0" prefWidth="397.0">
+                            <columns>
+                                <TableColumn fx:id="columnMed" prefWidth="135.0" text="Medicines" />
+                                <TableColumn fx:id="columnDosg" prefWidth="135.0" text="Dosage" />
+                                <TableColumn fx:id="columnDurn" prefWidth="112.0" text="Duration" />
+                            </columns>
+                        </TableView>
+                    </children>
+                </AnchorPane>
+                <AnchorPane maxWidth="300.0" minHeight="900.0" minWidth="0.0" prefHeight="900.0" prefWidth="446.0">
+                    <children>
+                        <Label layoutX="14.0" layoutY="6.0" prefHeight="59.0" prefWidth="135.0" text="VITALS:">
+                            <font>
+                                <Font name="System Bold Italic" size="30.0" />
+                            </font>
+                        </Label>
+                        <Label layoutX="28.0" layoutY="145.0" text="Bld. Pressure:" />
+                        <TextField fx:id="BP" layoutX="130.0" layoutY="140.0" prefHeight="27.0" prefWidth="159.0" />
+                        <Label layoutX="28.0" layoutY="203.0" text="Pulse Rate:" />
+                        <TextField fx:id="PR" layoutX="130.0" layoutY="198.0" prefHeight="27.0" prefWidth="159.0" />
+                        <Label layoutX="28.0" layoutY="261.0" prefHeight="17.0" prefWidth="74.0" text="Bld. Sugar:" />
+                        <TextField fx:id="BSug" layoutX="130.0" layoutY="256.0" prefHeight="27.0" prefWidth="159.0" />
+                        <Label layoutX="28.0" layoutY="319.0" text="Body Temp :" />
+                        <TextField fx:id="Temp" layoutX="130.0" layoutY="314.0" prefHeight="27.0" prefWidth="159.0" />
+                        <Label layoutX="28.0" layoutY="377.0" prefHeight="21.0" prefWidth="67.0" text="Height :" />
+                        <TextField fx:id="Height" layoutX="130.0" layoutY="372.0" prefHeight="27.0" prefWidth="159.0" />
+                        <Label layoutX="28.0" layoutY="435.0" text="Weight :" />
+                        <TextField fx:id="Weight" layoutX="130.0" layoutY="430.0" prefHeight="27.0" prefWidth="159.0" />
+                        <ComboBox fx:id="Reports" layoutX="127.0" layoutY="490.0" onAction="#Reportsmod" prefHeight="32.0" prefWidth="159.0" />
+                        <Label layoutX="29.0" layoutY="497.0" text="Reports:" />
+                        <Button layoutX="51.0" layoutY="553.0" mnemonicParsing="false" onAction="#update" prefHeight="31.0" prefWidth="126.0" text="Update">
+                            <font>
+                                <Font size="23.0" />
+                            </font>
+                        </Button>
+                        <Button layoutX="207.0" layoutY="566.0" mnemonicParsing="false"  text="Delete" />
+                    </children>
+                </AnchorPane>
+            </items>
+        </SplitPane>
+    </children>
+</VBox>
