@@ -1,40 +1,35 @@
 package sample;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
+import javafx.collections.*;
+import javafx.collections.*;
+import javafx.event.*;
+import javafx.fxml.*;
+import javafx.fxml.*;
 import javafx.scene.control.*;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
-import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.control.cell.TextFieldTableCell;
-import javafx.scene.control.TableCell;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableColumn.CellDataFeatures;
-import javafx.scene.control.TableColumn.CellEditEvent;
-import javafx.scene.control.TablePosition;
-import javafx.scene.control.TableView;
-import javafx.scene.control.cell.CheckBoxTableCell;
-import javafx.scene.control.cell.ComboBoxTableCell;
-import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.control.cell.TextFieldTableCell;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.stage.FileChooser;
-
-import java.io.File;
-import java.io.IOException;
-import java.net.URL;
+import javafx.scene.control.*;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.*;
+import javafx.scene.control.cell.*;
+import javafx.scene.control.*;
+import javafx.scene.control.*;
+import javafx.scene.control.TableColumn.*;
+import javafx.scene.control.TableColumn.*;
+import javafx.scene.control.*;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.*;
+import javafx.scene.control.cell.*;
+import javafx.scene.control.cell.*;
+import javafx.scene.control.cell.*;
+import javafx.scene.image.*;
+import javafx.scene.image.*;
+import javafx.stage.*;
+import java.io.*;
+import java.io.*;
+import java.net.*;
 import java.sql.*;
-import java.time.LocalDate;
-import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
-import java.util.Date;
-import java.util.ResourceBundle;
-
-import static java.sql.Date.valueOf;
+import java.time.*;
+import java.time.format.*;
+import java.util.*;
 
 public class InsertController implements Initializable {
     String relativex;
@@ -75,7 +70,7 @@ public class InsertController implements Initializable {
     @FXML
     private DatePicker Date;
     @FXML
-    private ComboBox<String> Reports = new ComboBox<String>();
+    private final ComboBox<String> Reports = new ComboBox<String>();
     @FXML
     private TableView<Meds> tableMeds;
     @FXML
@@ -84,15 +79,17 @@ public class InsertController implements Initializable {
     private TableColumn<Meds, String> columnDosg;
     @FXML
     private TableColumn<Meds, String> columnDurn;
-    Connection conn1 = SqliteConnection.connector();
-    Connection conn= SqliteConnection.connector();
-    Connection conn2 = SqliteConnection.connector();
+    final Connection conn1 = SqliteConnection.connector();
+    final Connection conn= SqliteConnection.connector();
+    final Connection conn2 = SqliteConnection.connector();
     private ObservableList<PatientDetails> data1;
     String newMed;
     String newDos;
     String newDur;
-    public ObservableList<Meds> data4 = FXCollections.observableArrayList();
-    ;
+    public final ObservableList<Meds> data4 = FXCollections.observableArrayList();
+
+    public InsertController() {
+    }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -136,7 +133,7 @@ public class InsertController implements Initializable {
             Meds medicine = event1.getTableView().getItems().get(row);
             medicine.setduranProperty(newDur);
             String sql2 = "INSERT INTO Meds(MedName, Dosage, Duration, VisitID, MedVisID) VALUES (?, ?, ?, ?, ?)";
-            try ( PreparedStatement pstmt2 = conn.prepareStatement(sql2) )
+            try ( PreparedStatement pstmt2 = Objects.requireNonNull(conn).prepareStatement(sql2) )
             {
                 pstmt2.setString(1, newMed);
                 pstmt2.setString(2, newDos);
@@ -163,8 +160,8 @@ public class InsertController implements Initializable {
     public void insert(ActionEvent event) {
         String sql = "INSERT INTO PatientDetails(Pid,Name,BloodGroup,Age,Sex,Address,PhoneNumber, DOB,Photo) VALUES (?, ?, ?, ?, ?, ?, ?, ? ,?)";
         String sql1 = "INSERT INTO Visits(Pidfk,VisitDate,VisitID,Height,Prognosis,Diagnosis,Weight,BP,Sugar,Temp,Pulse,Remarks) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-        try (   PreparedStatement pstmt = conn1.prepareStatement(sql);
-                PreparedStatement pstmt1 = conn1.prepareStatement(sql1);)
+        try (PreparedStatement pstmt = Objects.requireNonNull(conn1).prepareStatement(sql);
+             PreparedStatement pstmt1 = conn1.prepareStatement(sql1))
         {
             if(Name.getText().isEmpty()||BGrp.getText().isEmpty()||Age.getText().isEmpty()||Sex.getText().isEmpty()||Addr.getText().isEmpty()||Phone.getText().isEmpty()||DOB.getText().isEmpty()||Date.getValue().toString().isEmpty()||Height.getText().isEmpty()||Prog.getText().isEmpty()||Diag.getText().isEmpty()||Weight.getText().isEmpty()||BP.getText().isEmpty()||BSug.getText().isEmpty()||Temp.getText().isEmpty()||PR.getText().isEmpty())
             {
@@ -206,15 +203,15 @@ public class InsertController implements Initializable {
         }
 
         try {
-            conn1.close();
-            conn.close();
-            conn2.close();
+            Objects.requireNonNull(conn1).close();
+            Objects.requireNonNull(conn).close();
+            Objects.requireNonNull(conn2).close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
-    public void upImage(ActionEvent event) throws IOException {
+    public void upImage(ActionEvent event) {
         FileChooser f = new FileChooser();
         File file = f.showOpenDialog(null);
         String pa = file.getPath();
@@ -232,7 +229,7 @@ public class InsertController implements Initializable {
         String base = "/Users/shubhankitsingh/IdeaProjects/PatientMonitoringSystemBeta/src";
         String relative = new File(base).toURI().relativize(new File(pa).toURI()).getPath();
         String sql = "INSERT INTO Reports(Rid,Pid,VisitID,Type,URL) VALUES (?, ?, ?, ?, ?)";
-        try ( PreparedStatement pstmt = conn2.prepareStatement(sql);)
+        try ( PreparedStatement pstmt = Objects.requireNonNull(conn2).prepareStatement(sql))
         {
             pstmt.setInt(1, Controller.repID);
             Controller.repID++;

@@ -1,27 +1,26 @@
 package sample;
 
-import java.io.File;
-import java.net.URL;
-import java.sql.SQLException;
-import java.util.ResourceBundle;
-
-import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.stage.Stage;
+import java.io.*;
+import java.net.*;
+import java.sql.*;
+import java.util.*;
+import javafx.event.*;
+import javafx.fxml.*;
+import javafx.fxml.*;
+import javafx.fxml.*;
+import javafx.scene.*;
+import javafx.scene.*;
+import javafx.scene.control.*;
+import javafx.scene.control.*;
+import javafx.scene.control.*;
+import javafx.scene.image.*;
+import javafx.scene.image.*;
+import javafx.stage.*;
 
 
 
 public class LoginController implements Initializable {
-    public LoginModel loginModel = new LoginModel();
+    public final LoginModel loginModel = new LoginModel();
 
     @FXML
     private Label isConnected;
@@ -32,6 +31,10 @@ public class LoginController implements Initializable {
     @FXML
     ImageView ivlogin;
     private int count=0;
+
+    public LoginController() {
+    }
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         // TODO Auto-generated method stub

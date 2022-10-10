@@ -1,12 +1,14 @@
 package sample;
-import sample.SqliteConnection;
 
 import java.sql.*;
+import java.util.Objects;
+
 public class LoginModel {
-    Connection connection;
+    final Connection connection;
     public LoginModel () {
+        super();
         connection = SqliteConnection.connector();
-        if(connection == null) {
+        if (connection == null) {
             System.out.println("Connection not successful");
             System.exit(1);
         }
@@ -32,19 +34,14 @@ public class LoginModel {
             preparedStatement.setString(1, user);
             preparedStatement.setString(2, pass);
             resultSet = preparedStatement.executeQuery();
-            if (resultSet.next()) {
-                return true;
-            }
-            else {
-                return false;
-            }
+            return resultSet.next();
         }
         catch (Exception e) {
             return false;
         } finally {
             System.out.println("bull");
-            preparedStatement.close();
-            resultSet.close();
+            Objects.requireNonNull(preparedStatement).close();
+            Objects.requireNonNull(resultSet).close();
         }
     }
 }

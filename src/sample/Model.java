@@ -3,9 +3,10 @@ package sample;
 import java.sql.*;
 
 public class Model {
-    Connection connection;
+    final Connection connection;
 
     public Model() {
+        super();
         connection = SqliteConnection.connector();
         if (connection == null)
             System.exit(1);

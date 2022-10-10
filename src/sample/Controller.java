@@ -1,32 +1,18 @@
 package sample;
 //
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.control.*;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.Menu;
-import javafx.scene.control.MenuItem;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
-import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.VBox;
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
-import javafx.scene.media.MediaView;
-import javafx.stage.Stage;
-import org.sqlite.SQLiteConnection;
+//import javafx.collections.*;
+//import javafx.event.*;
+//import javafx.fxml.*;
+//import javafx.scene.*;
+//import javafx.scene.control.*;
+//import javafx.scene.control.cell.*;
+//import javafx.scene.image.*;
+//import javafx.scene.input.*;
+//import javafx.scene.layout.*;
+//import javafx.scene.media.*;
+//import javafx.stage.*;
+//import org.sqlite.*;
 
 import java.awt.*;
 import java.io.File;
@@ -37,10 +23,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Objects;
 import java.util.ResourceBundle;
 
 public class Controller implements Initializable {
-    public Model model = new Model();
+    public final Model model = new Model();
     @FXML
     private ImageView iv;
     @FXML
@@ -126,18 +113,19 @@ public class Controller implements Initializable {
     static int patID = 0;
     static int visID = 0;
     static int vissID = 0;
-    private ObservableList<PatientDetails> data1;
-    private ObservableList<Meds> data;
     MainInsert ob = new MainInsert();
     // Stage primaryStages=null;
     public static int repID;
     public static int medID;
     @FXML
-    private ComboBox<String> Reports1 = new ComboBox<String>();
+    private final ComboBox<String> Reports1 = new ComboBox<String>();
 
-    public void searchData(ActionEvent event) throws SQLException {
+    public Controller() {
+    }
+
+    public void searchData(ActionEvent event) {
         connection1 = SqliteConnection.connector();
-        data1 = FXCollections.observableArrayList();
+        ObservableList<PatientDetails> data1 = FXCollections.observableArrayList();
         String nameS = searcher.getText();
         if (searcher.getText().isEmpty()) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -173,18 +161,17 @@ public class Controller implements Initializable {
             Image image = new Image("sample/ghanta.jpeg");
             iv.setImage(image);
             Reports1.setPromptText("Report type");
-            int pidi = (int) (nameS.charAt(0));
+            int pidi = nameS.charAt(0);
             String query;
             if (pidi > 48 && pidi < 57)
                 query = "select * from PatientDetails where (Pid =" + (pidi - 48) + ");";
             else
                 query = "select * from PatientDetails where (name  LIKE '" + nameS + "');";
             System.out.print(nameS + "  " + pidi);
-            ResultSet resultSet = null;
+            ResultSet resultSet;
             try {
 
                 resultSet = connection1.createStatement().executeQuery(query);
-                query = "";
                 z = Integer.parseInt(resultSet.getString(1));
                 while (resultSet.next()) {
                     data1.add(new PatientDetails(resultSet.getString(1), resultSet.getString(2), resultSet.getString(3), resultSet.getString(4), resultSet.getString(5), resultSet.getString(6), resultSet.getString(7), resultSet.getString(8), resultSet.getString(9)));
@@ -234,9 +221,9 @@ public class Controller implements Initializable {
             Image image = new Image(relative);
             iv.setImage(image);
             String query3 = "select * from Visits where Pidfk=" + pattID + ";";
-            ResultSet resultSet3 = null;
+            ResultSet resultSet3;
             connection2 = SqliteConnection.connector();
-            resultSet3 = connection2.createStatement().executeQuery(query3);
+            resultSet3 = Objects.requireNonNull(connection2).createStatement().executeQuery(query3);
             while (resultSet3.next()) {
                 data2.add(resultSet3.getString("VisitDate"));
 
@@ -286,23 +273,23 @@ public class Controller implements Initializable {
             String query2 = "select count(*) from PatientDetails";
             String query3 = "select count(*) from Meds";
             String query4 = "select count(*) from Reports";
-            ResultSet resultSet1 = null;
+            ResultSet resultSet1;
             connection9 = SqliteConnection.connector();
-            resultSet1 = connection9.createStatement().executeQuery(query1);
+            resultSet1 = Objects.requireNonNull(connection9).createStatement().executeQuery(query1);
             while (resultSet1.next()) {
                 visID = resultSet1.getInt(1) + 1;
             }
-            ResultSet resultSet2 = null;
+            ResultSet resultSet2;
             resultSet2 = connection9.createStatement().executeQuery(query2);
             while (resultSet2.next()) {
                 patID = resultSet2.getInt(1) + 1;
             }
-            ResultSet resultSet3 = null;
+            ResultSet resultSet3;
             resultSet3 = connection9.createStatement().executeQuery(query3);
             while (resultSet3.next()) {
                 medID = resultSet3.getInt(1) + 1;
             }
-            ResultSet resultSet4 = null;
+            ResultSet resultSet4;
             resultSet4 = connection9.createStatement().executeQuery(query4);
             while (resultSet4.next()) {
                 repID = resultSet4.getInt(1) + 1;
@@ -313,7 +300,7 @@ public class Controller implements Initializable {
         }
     }
 
-    public void selectDate(ActionEvent event) throws SQLException {
+    public void selectDate(ActionEvent event) {
         //  mediaPlayer.setAutoPlay(false);
         LocalDate localDate = date.getValue();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MMMM uuuu");
@@ -321,10 +308,10 @@ public class Controller implements Initializable {
 
         String query1 = "select * from Visits where VisitDate='" + localDate.format(formatter) + "'and Pidfk=" + pattID + ";";
         System.out.print(query1);
-        ResultSet resultSet1 = null;
+        ResultSet resultSet1;
         try {
             connection3 = SqliteConnection.connector();
-            resultSet1 = connection3.createStatement().executeQuery(query1);
+            resultSet1 = Objects.requireNonNull(connection3).createStatement().executeQuery(query1);
 
             if (!resultSet1.next()) {
                 bp.setText("");
@@ -359,12 +346,12 @@ public class Controller implements Initializable {
                 System.out.println(vissID);
             }
         } catch (SQLException e) {
-
+            throw new RuntimeException(e);
         }
         String query2 = "select MedName,Dosage,Duration from Meds where VisitID=" + vissID + ";";
-        data = FXCollections.observableArrayList();
+        ObservableList<Meds> data = FXCollections.observableArrayList();
         try {
-            ResultSet resultSet2 = null;
+            ResultSet resultSet2;
             resultSet2 = connection3.createStatement().executeQuery(query2);
             //adding elements to an observable array list
             while (resultSet2.next()) {
@@ -372,7 +359,7 @@ public class Controller implements Initializable {
                 data.add(new Meds(resultSet2.getString(1), resultSet2.getString(2), resultSet2.getString(3)));
             }
         } catch (SQLException e) {
-
+            throw new RuntimeException(e);
         }
 
         columnMed.setCellValueFactory(new PropertyValueFactory<>("Mname"));
@@ -448,9 +435,8 @@ public class Controller implements Initializable {
         tableMeds.setItems(null);
         connection4 = SqliteConnection.connector();
         try {
-            resultSet5 = connection4.createStatement().executeQuery(query6);
-            resultSet5 = null;
-            resultSet5 = connection4.createStatement().executeQuery(query5);
+            Objects.requireNonNull(connection4).createStatement().executeQuery(query6);
+            connection4.createStatement().executeQuery(query5);
         } catch (SQLException e1) {
             e1.printStackTrace();
         }
@@ -463,7 +449,7 @@ public class Controller implements Initializable {
         connection5 = SqliteConnection.connector();
         try {
 
-            ResultSet resultSet = resultSet6 = connection5.createStatement().executeQuery(query6);
+            ResultSet resultSet = Objects.requireNonNull(connection5).createStatement().executeQuery(query6);
         } catch (SQLException e1) {
             e1.printStackTrace();
         }
@@ -471,7 +457,7 @@ public class Controller implements Initializable {
     }
 
 
-    public void modifyPatient(ActionEvent event) throws IOException {
+    public void modifyPatient(ActionEvent event) {
         Stage primaryStages = new Stage();
         Parent roots = FXMLLoader.load(getClass().getResource("modify.fxml"));
         primaryStages.setTitle("PatientMonitoringSystem");
@@ -491,7 +477,7 @@ public class Controller implements Initializable {
         }
     }
 
-    public void modifyVisit(ActionEvent event) throws IOException {
+    public void modifyVisit(ActionEvent event) {
         Stage primaryStages = new Stage();
         Parent roots = FXMLLoader.load(getClass().getResource("modifyvis.fxml"));
         primaryStages.setTitle("PatientMonitoringSystem");
@@ -511,14 +497,14 @@ public class Controller implements Initializable {
         }
     }
 
-    public void reports(ActionEvent event) throws IOException {
+    public void reports(ActionEvent event) {
         String query6;
         System.out.println("kj" + (Reports1.getValue()).toString() + "vissID" + vissID);
         query6 = "select URL from Reports where  VisitID=" + vissID + " and Type= '" + (Reports1.getValue()).toString() + "';";
-        ResultSet resultSet61 = null;
+        ResultSet resultSet61;
         connection8 = SqliteConnection.connector();
         try {
-            resultSet61 = connection8.createStatement().executeQuery(query6);
+            resultSet61 = Objects.requireNonNull(connection8).createStatement().executeQuery(query6);
             if (resultSet61.next()) {
                 System.out.println(resultSet61.getString("URL"));
             /*media = new Media(new File(resultSet61.getString(1)).toURI().toString());

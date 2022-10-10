@@ -1,16 +1,19 @@
 package sample;
 
-import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.stage.Stage;
+import javafx.application.*;
+import javafx.fxml.*;
+import javafx.scene.*;
+import javafx.scene.*;
+import javafx.stage.*;
 
 
 public class MainInsert extends Application {
 
+    public MainInsert() {
+    }
+
     @Override
-    public void start(Stage primaryStage) throws Exception {
+    public void start(Stage primaryStage) {
         Parent root = FXMLLoader.load(getClass().getResource("insert.fxml"));
         primaryStage.setTitle("Add new patient");
         primaryStage.setScene(new Scene(root, 300, 275));

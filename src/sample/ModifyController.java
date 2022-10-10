@@ -1,40 +1,37 @@
 package sample;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
+import javafx.collections.*;
+import javafx.collections.*;
+import javafx.event.*;
+import javafx.fxml.*;
+import javafx.fxml.*;
 import javafx.scene.control.*;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
-import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.control.cell.TextFieldTableCell;
-import javafx.scene.control.TableCell;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableColumn.CellDataFeatures;
-import javafx.scene.control.TableColumn.CellEditEvent;
-import javafx.scene.control.TablePosition;
-import javafx.scene.control.TableView;
-import javafx.scene.control.cell.CheckBoxTableCell;
-import javafx.scene.control.cell.ComboBoxTableCell;
-import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.control.cell.TextFieldTableCell;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.stage.FileChooser;
-
-import java.io.File;
-import java.io.IOException;
-import java.net.URL;
+import javafx.scene.control.*;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.*;
+import javafx.scene.control.cell.*;
+import javafx.scene.control.*;
+import javafx.scene.control.*;
+import javafx.scene.control.TableColumn.*;
+import javafx.scene.control.TableColumn.*;
+import javafx.scene.control.*;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.*;
+import javafx.scene.control.cell.*;
+import javafx.scene.control.cell.*;
+import javafx.scene.control.cell.*;
+import javafx.scene.image.*;
+import javafx.scene.image.*;
+import javafx.stage.*;
+import java.io.*;
+import java.io.*;
+import java.net.*;
 import java.sql.*;
-import java.time.LocalDate;
-import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
-import java.util.Date;
-import java.util.ResourceBundle;
-
-import static java.sql.Date.valueOf;
+import java.time.*;
+import java.time.*;
+import java.time.format.*;
+import java.util.*;
+import java.util.*;
 
 public class ModifyController implements Initializable {
     @FXML
@@ -74,7 +71,7 @@ public class ModifyController implements Initializable {
     @FXML
     private DatePicker Date;
     @FXML
-    private ComboBox<String> Reports = new ComboBox<String>();
+    private final ComboBox<String> Reports = new ComboBox<String>();
     @FXML
     private TableView<Meds> tableMeds;
     @FXML
@@ -85,15 +82,17 @@ public class ModifyController implements Initializable {
     private TableColumn<Meds, String> columnDurn;
     @FXML
     private Label PIDLabel;
-    Connection conn1 = SqliteConnection.connector();
-    Connection conn= SqliteConnection.connector();
-    Connection conn2 = SqliteConnection.connector();
+    final Connection conn1 = SqliteConnection.connector();
+    final Connection conn= SqliteConnection.connector();
+    final Connection conn2 = SqliteConnection.connector();
     private ObservableList<PatientDetails> data1;
     String newMed;
     String newDos;
     String newDur;
     public ObservableList<Meds> data4 = FXCollections.observableArrayList();
 
+    public ModifyController() {
+    }
 
 
     @Override
@@ -105,10 +104,10 @@ public class ModifyController implements Initializable {
         System.out.println(pa);*/
 
         String query1 = "select * from PatientDetails where Pid=" + Controller.pattID + "" + ";";
-        ResultSet resultSet1 = null;
+        ResultSet resultSet1;
         try {
             Connection conn3=SqliteConnection.connector();
-            resultSet1 = conn3.createStatement().executeQuery(query1);
+            resultSet1 = Objects.requireNonNull(conn3).createStatement().executeQuery(query1);
             Name.setText(resultSet1.getString("Name"));
             BGrp.setText(resultSet1.getString("BloodGroup"));
             Sex.setText(resultSet1.getString("Sex"));
@@ -123,6 +122,7 @@ public class ModifyController implements Initializable {
 
             conn3.close();}
         catch (SQLException e) {
+            throw new RuntimeException(e);
         }
         /*tableMeds.setEditable(true);
         columnMed.setCellValueFactory(new PropertyValueFactory<>("Mname"));
@@ -187,7 +187,7 @@ public class ModifyController implements Initializable {
         //String sql1 = "INSERT INTO Visits(Pidfk,VisitDate,VisitID,Height,Prognosis,Diagnosis,Weight,BP,Sugar,Temp,Pulse,Remarks) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         String sql = "update PatientDetails set Name=?, BloodGroup=? , Age=?, Sex=?, Address=?, PhoneNumber=?, DOB=? where Pid='" + Controller.pattID + "' ";
 
-        try (   PreparedStatement pstmt = conn1.prepareStatement(sql);)
+        try (   PreparedStatement pstmt = Objects.requireNonNull(conn1).prepareStatement(sql))
         {
             if(Name.getText().isEmpty()||BGrp.getText().isEmpty()||Age.getText().isEmpty()||Sex.getText().isEmpty()||Addr.getText().isEmpty()||Phone.getText().isEmpty()||DOB.getText().isEmpty())
             {
@@ -212,15 +212,15 @@ public class ModifyController implements Initializable {
         }
 
         try {
-            conn1.close();
-            conn.close();
-            conn2.close();
+            Objects.requireNonNull(conn1).close();
+            Objects.requireNonNull(conn).close();
+            Objects.requireNonNull(conn2).close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
-    public void upImage(ActionEvent event) throws IOException {
+    public void upImage(ActionEvent event) {
         FileChooser f = new FileChooser();
         File file = f.showOpenDialog(null);
         String pa = file.getPath();

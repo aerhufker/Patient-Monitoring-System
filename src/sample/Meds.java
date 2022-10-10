@@ -1,7 +1,7 @@
 package sample;
 
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
+//import javafx.beans.property.*;
+//import javafx.beans.property.*;
 
 public class Meds {
     private StringProperty Mname;
@@ -9,6 +9,7 @@ public class Meds {
     private StringProperty duran;
 
     public Meds(String Mname, String dosg, String duran) {
+        super();
 
         this.Mname = new SimpleStringProperty(Mname);
         this.dosg = new SimpleStringProperty(dosg);

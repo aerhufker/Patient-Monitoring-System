@@ -1,42 +1,39 @@
 package sample;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
+import javafx.collections.*;
+import javafx.collections.*;
+import javafx.event.*;
+import javafx.fxml.*;
+import javafx.fxml.*;
 import javafx.scene.control.*;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
-import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.control.cell.TextFieldTableCell;
-import javafx.scene.control.TableCell;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableColumn.CellDataFeatures;
-import javafx.scene.control.TableColumn.CellEditEvent;
-import javafx.scene.control.TablePosition;
-import javafx.scene.control.TableView;
-import javafx.scene.control.cell.CheckBoxTableCell;
-import javafx.scene.control.cell.ComboBoxTableCell;
-import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.control.cell.TextFieldTableCell;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.stage.FileChooser;
-
-import java.sql.ResultSet;
-import java.io.File;
-import java.io.IOException;
-import java.net.URL;
+import javafx.scene.control.*;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.*;
+import javafx.scene.control.cell.*;
+import javafx.scene.control.*;
+import javafx.scene.control.*;
+import javafx.scene.control.TableColumn.*;
+import javafx.scene.control.TableColumn.*;
+import javafx.scene.control.*;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.*;
+import javafx.scene.control.cell.*;
+import javafx.scene.control.cell.*;
+import javafx.scene.control.cell.*;
+import javafx.scene.image.*;
+import javafx.scene.image.*;
+import javafx.stage.*;
+import java.awt.*;
 import java.sql.*;
-import java.time.LocalDate;
-import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
-import java.util.Date;
-import java.util.ResourceBundle;
-
-import static java.sql.Date.valueOf;
-import static sample.Controller.vissID;
+import java.io.*;
+import java.io.*;
+import java.net.*;
+import java.sql.*;
+import java.time.*;
+import java.time.*;
+import java.time.format.*;
+import java.util.*;
+import java.util.*;
 
 public class ModifyVisController implements Initializable {
     @FXML
@@ -75,10 +72,8 @@ public class ModifyVisController implements Initializable {
     private Label age;
     @FXML
     private DatePicker Date;
-   @FXML
-    private ObservableList<Meds> datax;
     @FXML
-    private ComboBox<String> Reports = new ComboBox<String>();
+    private final ComboBox<String> Reports = new ComboBox<String>();
     @FXML
     private TableView<Meds> tableMeds;
     @FXML
@@ -89,16 +84,18 @@ public class ModifyVisController implements Initializable {
     private TableColumn<Meds, String> columnDurn;
     @FXML
     private Label PIDLabel;
-    Connection conn1 = SqliteConnection.connector();
-    Connection conn = SqliteConnection.connector();
-    Connection conn2 = SqliteConnection.connector();
-    Connection conn3 = SqliteConnection.connector();
+    final Connection conn1 = SqliteConnection.connector();
+    final Connection conn = SqliteConnection.connector();
+    final Connection conn2 = SqliteConnection.connector();
+    final Connection conn3 = SqliteConnection.connector();
     private ObservableList<PatientDetails> data1;
     String newMed;
     String newDos;
     String newDur;
-    public ObservableList<Meds> data4 = FXCollections.observableArrayList();
-    ;
+    public final ObservableList<Meds> data4 = FXCollections.observableArrayList();
+
+    public ModifyVisController() {
+    }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -139,7 +136,7 @@ public class ModifyVisController implements Initializable {
             Meds medicine = event1.getTableView().getItems().get(row);
             medicine.setduranProperty(newDur);
             String sql2 = "update Meds set MedName=?, Dosage=?, Duration=? where VisitID='" + Controller.vissID + "' ";
-            try (PreparedStatement pstmt2 = conn.prepareStatement(sql2)) {
+            try (PreparedStatement pstmt2 = Objects.requireNonNull(conn).prepareStatement(sql2)) {
                 pstmt2.setString(1, newMed);
                 pstmt2.setString(2, newDos);
                 pstmt2.setString(3, newDur);
@@ -161,9 +158,9 @@ public class ModifyVisController implements Initializable {
         Reports.setEditable(true);
 
         String query1 = "select * from PatientDetails where Pid=" + Controller.pattID + "" + ";";
-        ResultSet resultSet1 = null;
+        ResultSet resultSet1;
         try {
-            resultSet1 = conn1.createStatement().executeQuery(query1);
+            resultSet1 = Objects.requireNonNull(conn1).createStatement().executeQuery(query1);
             name.setText(resultSet1.getString("Name"));
             Bgrp.setText(resultSet1.getString("BloodGroup"));
             sex.setText(resultSet1.getString("Sex"));
@@ -175,12 +172,12 @@ public class ModifyVisController implements Initializable {
             String relative = new File(base).toURI().relativize(new File(resultSet1.getString("Photo")).toURI()).getPath();
             Image image2 = new Image(relative);
             iv3.setImage(image2);
-            String query12 = "select * from Visits where VisitID=" + vissID + ";";
+            String query12 = "select * from Visits where VisitID=" + Controller.vissID + ";";
             System.out.print(query12);
-            ResultSet resultSet2 = null;
+            ResultSet resultSet2;
             try {
 
-                resultSet2 = conn3.createStatement().executeQuery(query12);
+                resultSet2 = Objects.requireNonNull(conn3).createStatement().executeQuery(query12);
                 BP.setText(resultSet2.getString("bp"));
                 Height.setText(resultSet2.getString("height"));
                 BSug.setText(resultSet2.getString("sugar"));
@@ -193,20 +190,20 @@ public class ModifyVisController implements Initializable {
                 Date.getEditor().setText(resultSet2.getString("VisitDate"));
 
             } catch (SQLException e) {
-
+                throw new RuntimeException(e);
             }
-            String query2 = "select MedName,Dosage,Duration from Meds where VisitID=" + vissID + ";";
-            datax = FXCollections.observableArrayList();
+            String query2 = "select MedName,Dosage,Duration from Meds where VisitID=" + Controller.vissID + ";";
+            ObservableList<Meds> datax = FXCollections.observableArrayList();
             try {
-                ResultSet resultSet23 = null;
-                resultSet23 = conn3.createStatement().executeQuery(query2);
+                ResultSet resultSet23;
+                resultSet23 = Objects.requireNonNull(conn3).createStatement().executeQuery(query2);
                 //adding elements to an observable array list
                 while (resultSet23.next()) {
                     System.out.println(resultSet23.getString("MedName"));
                     datax.add(new Meds(resultSet23.getString(1), resultSet23.getString(2), resultSet23.getString(3)));
                 }
             } catch (SQLException e) {
-
+                throw new RuntimeException(e);
             }
 
             columnMed.setCellValueFactory(new PropertyValueFactory<>("Mname"));
@@ -218,13 +215,14 @@ public class ModifyVisController implements Initializable {
 
 
         } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
     }
 
     public void update(ActionEvent event) {
         String sql1 = "update Visits set VisitDate=?, Height=?, Prognosis=?, Diagnosis=?, Weight=?, BP=?, Sugar=?, Temp=?, Pulse=?, Remarks=? where Pidfk='" + Controller.pattID + "' ";
         String sql2 = "update Meds set MedName=?, Dosage=?, Duration=? where VisitID='" + Controller.vissID + "' ";
-        try (PreparedStatement pstmt1 = conn1.prepareStatement(sql1);
+        try (PreparedStatement pstmt1 = Objects.requireNonNull(conn1).prepareStatement(sql1);
              PreparedStatement pstmt2 = conn1.prepareStatement(sql2)) {
             //pstmt1.setInt(1, Controller.patID);
             if (Date.getValue().toString().isEmpty() || Height.getText().isEmpty() || Prog.getText().isEmpty() || Diag.getText().isEmpty() || Weight.getText().isEmpty() || BP.getText().isEmpty() || BSug.getText().isEmpty() || Temp.getText().isEmpty() || PR.getText().isEmpty()) {
@@ -260,15 +258,15 @@ public class ModifyVisController implements Initializable {
         String query2 = "select MedName,Dosage,Duration from Meds ;";
 
         try {
-            conn1.close();
-            conn.close();
-            conn2.close();
+            Objects.requireNonNull(conn1).close();
+            Objects.requireNonNull(conn).close();
+            Objects.requireNonNull(conn2).close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
-    public void upImage(ActionEvent event) throws IOException {
+    public void upImage(ActionEvent event) {
         FileChooser f = new FileChooser();
         File file = f.showOpenDialog(null);
         String pa = file.getPath();
@@ -285,7 +283,7 @@ public class ModifyVisController implements Initializable {
         String base = "/";
         String relative = new File(base).toURI().relativize(new File(pa).toURI()).getPath();
         String sql = "update Reports set Type=?, URL=? where VisitID='" + Controller.vissID + "' ";
-        try (PreparedStatement pstmt = conn2.prepareStatement(sql);) {
+        try (PreparedStatement pstmt = Objects.requireNonNull(conn2).prepareStatement(sql)) {
             //pstmt.setInt(1, Controller.repID);
             //Controller.repID++;
             // pstmt.setInt(2, Controller.patID);
